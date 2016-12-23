@@ -1,0 +1,8 @@
+p>*{
+  margin-right: 10px;
+}
+.fa-stack:hover{
+    color: red;
+    transition: 0.9s;
+    transform: rotateX(180deg);
+}
