@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import App from './App';
 import icons from './icons';
 import './IconApp.css';
+
 const wordMap = icons.reduce(function(chain, i) {
   const parts = i.split('-');
   const key = parts[1];
@@ -10,35 +11,24 @@ const wordMap = icons.reduce(function(chain, i) {
   return chain;
 }, {});
 
-/*const colors = [
-  'green',
-  'pink',
-  'purple',
-  'blue',
-  'red',
-  'orange'
-];*/
-
-//console.log(wordMap);
-
 class IconApp extends Component {
+
   constructor() {
     // In a constructor, call `super` first if the class extends another class
     super();
-
     this.state = {
       colorIndices: [],
       text:[],
     };
+
     this.myFunction=this.myFunction.bind(this);
 
   }
-  myFunction(val){
+  myFunction(val,i){
 
-    const nextText = [...this.state.text];
-    nextText.push(value);
+    const nextText=[...this.state.text];
+    nextText[i]=val;
     this.setState({text:nextText});
-    console.log(nextText);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -67,20 +57,21 @@ class IconApp extends Component {
 
     words = words.map(function(w, i) {
       w = w.replace(/\W/g, '').toLowerCase();
+      const clicked=false;
       const colorIndex = colorIndices[i];
       const style = {
         color:'#'+colorIndex+'',
       };
 
-    if (wordMap[w]) {
+    if (wordMap[w]&&this.state.text[i]==undefined) {
         // Found an icon! Return the icon instead of the word
-        return (<i style={style} key={i} className={'fa-stack fa ' + wordMap[w]}/>);
+          return (<i onClick={()=>this.myFunction(w,i)} style={style} key={i} id={i} className={'fa-stack fa ' + wordMap[w]}/>);
       }
       else {
         const x=w.replace(/s?$/, '');
-        if(wordMap[x])
+        if(wordMap[x]&&this.state.text[i]==undefined)
         {
-          return (<i style={style} key={i} className={'fa-stack fa ' + wordMap[x]}/>);
+          return (<i onClick={()=>this.myFunction(x,i)}style={style} key={i} id={i} className={'fa-stack fa ' + wordMap[x]}/>);
         }
         else {
           // Didn't find an icon for this word. Just return the word.
@@ -89,10 +80,9 @@ class IconApp extends Component {
           );
         }
       }
-    });
+    },this);
 
     return (
-
         <p>{words}</p>
     );
   }
