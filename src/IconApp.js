@@ -22,15 +22,14 @@ class IconApp extends Component {
     };
 
     this.myFunction=this.myFunction.bind(this);
-
   }
+  
   myFunction(val,i){
-
     const nextText=[...this.state.text];
     nextText[i]=val;
     this.setState({text:nextText});
   }
-
+ 
   componentWillReceiveProps(nextProps) {
     const nextWordCount = nextProps.text.split(' ').length;
 
@@ -49,6 +48,7 @@ class IconApp extends Component {
 
     // Now update state with our new array of color indices
     this.setState({ colorIndices: nextColorIndices });
+    this.setState({text:''});
   }
 
   render() {
@@ -63,16 +63,19 @@ class IconApp extends Component {
         color:'#'+colorIndex+'',
       };
 
-    if (wordMap[w]&&this.state.text[i]==undefined) {
+     if(wordMap[w]&&this.state.text[i]==undefined) {
         // Found an icon! Return the icon instead of the word
           return (<i onClick={()=>this.myFunction(w,i)} style={style} key={i} id={i} className={'fa-stack fa ' + wordMap[w]}/>);
       }
+      
       else {
         const x=w.replace(/s?$/, '');
+        
         if(wordMap[x]&&this.state.text[i]==undefined)
         {
-          return (<i onClick={()=>this.myFunction(x,i)}style={style} key={i} id={i} className={'fa-stack fa ' + wordMap[x]}/>);
+          return (<i onClick={()=>this.myFunction(x,i)} style={style} key={i} id={i} className={'fa-stack fa ' + wordMap[x]}/>);
         }
+        
         else {
           // Didn't find an icon for this word. Just return the word.
           return (
